@@ -4,19 +4,17 @@ import { ADD_RECORD_TO_STORE, EDIT_RECORD  } from "../data/constants"
 const record = (state = {}, action) => {
   switch (action.type) {
     case ADD_RECORD_TO_STORE:
-      return Object.assign({}, state, {
-        key: createGuid(),
-        title: action.record.title,
-        record: action.record
-      })
+        return Object.assign({}, action.record, {
+            key: createGuid()
+        });
     case EDIT_RECORD:
       if (state.key !== action.key) { return state }
 
       return Object.assign({}, state, {
         isDirty: true
-      })
+      });
     default:
-      return state
+        return state;
   }
 }
 
@@ -32,7 +30,7 @@ const records = (state = [], action) => {
         record(t, action)
       )
     default:
-      return state
+        return state;
   }
 }
 

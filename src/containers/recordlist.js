@@ -1,18 +1,18 @@
 
 import { connect } from 'react-redux'
 import recordList from '../components/recordlist'
-import editRecord from '../actions'
+import { editRecord } from '../actions'
 
 const getRecords = (records, filter) => {
   switch (filter) {
     case 'SHOW_ALL':
-      return records
+        return records;
     case 'SHOW_COMPLETED':
-      return records.filter(t => t.completed)
+        return records.filter(t => t.completed);
     case 'SHOW_ACTIVE':
-      return records.filter(t => !t.completed)
+        return records.filter(t => !t.completed);
     default:
-      return records
+        return records;
   }
 }
 
@@ -29,8 +29,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const RecordList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(recordList)
+    mapStateToProps,
+    mapDispatchToProps
+)(recordList);
 
 export default RecordList

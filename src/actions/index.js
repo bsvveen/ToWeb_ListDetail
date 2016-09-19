@@ -9,7 +9,6 @@ export const setFilter = (filter) => {
   }
 }
 
-
 export const getRecordsFromStore = () => {
   return {
     type: GET_RECORDS_FROM_STORE
