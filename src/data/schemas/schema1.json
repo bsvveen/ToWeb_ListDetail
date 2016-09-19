@@ -1,0 +1,10 @@
+{
+  "title": "Record",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "title": {"type": "string", "title": "Title", "default": "A new task"},
+    "date": {"type": "string", "title": "Date", "format": "date"},
+    "done": {"type": "boolean", "title": "Done?", "default": false}
+  }
+}
