@@ -1,18 +1,32 @@
 
-import { ADD_RECORD_TO_STORE, EDIT_RECORD  } from "../data/constants"
+import { ADD_RECORD, EDIT_RECORD, UPDATE_RECORD  } from "../data/constants"
+import update from 'react'
 
 const record = (state = {}, action) => {
   switch (action.type) {
-    case ADD_RECORD_TO_STORE:
-        return Object.assign({}, action.record, {
-            key: createGuid()
-        });
-    case EDIT_RECORD:
-      if (state.key !== action.key) { return state }
+    case ADD_RECORD:
+        if (action.record.key === undefined) {
+          return Object.assign({}, action.record, {
+              key: createGuid()
+          });
+        }
 
-      return Object.assign({}, state, {
-        isDirty: true
-      });
+        if (state.key !== action.record.key)
+        {
+          return state;
+        }
+
+        return action.record;
+    case EDIT_RECORD:
+        if (state.key !== action.key) {
+          return Object.assign({}, state, {
+            isDirty: false
+          });
+        }
+
+        return Object.assign({}, state, {
+          isDirty: true
+        });
     default:
         return state;
   }
@@ -20,15 +34,17 @@ const record = (state = {}, action) => {
 
 const records = (state = [], action) => {
   switch (action.type) {
-    case ADD_RECORD_TO_STORE:
-      return [
-        ...state,
-        record(undefined, action)
-      ]
+    case ADD_RECORD:
+        if (action.record.key === undefined) {
+          return [
+            ...state,
+            record(undefined, action)
+          ]
+        }
+
+        return state.map(t => record(t, action))
     case EDIT_RECORD:
-      return state.map(t =>
-        record(t, action)
-      )
+        return state.map(t => record(t, action))
     default:
         return state;
   }

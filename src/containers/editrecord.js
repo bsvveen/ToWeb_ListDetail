@@ -6,7 +6,7 @@ import Form from "react-jsonschema-form";
 import { postRecordToWebApi, addRecordToStore } from '../actions'
 import Schema from "../data/schemas/schema1.json";
 
-let AddRecordForm = ({ formData, onFormSubmit }) => {
+let EditRecordForm = ({ formData, onFormSubmit }) => {
     return (<Form schema={Schema} formData={formData} onSubmit={e => onFormSubmit(e.formData)}  onError={ e => console.log(e) } />)
 }
 
@@ -22,9 +22,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const AddRecord = connect(
+const EditRecord = connect(
     mapStateToProps,
     mapDispatchToProps
-)(AddRecordForm);
+)(EditRecordForm);
 
-export default AddRecord
+export default EditRecord

@@ -1,6 +1,6 @@
 
 import fetch from 'isomorphic-fetch'
-import { apiUrl, SET_FILTER, GET_RECORDS_FROM_STORE, ADD_RECORD_TO_STORE, RECEIVE_RECORD_FROM_WEBAPI, EDIT_RECORD} from "../data/constants"
+import { apiUrl, SET_FILTER, GET_RECORDS_FROM_STORE, ADD_RECORD, RECEIVE_RECORD_FROM_WEBAPI, EDIT_RECORD} from "../data/constants"
 
 export const setFilter = (filter) => {
   return {
@@ -38,10 +38,9 @@ export const getRecordsFromWebApi = () => {
     }
 }
 
-
 export const addRecordToStore = (record) => {
   return {
-    type: ADD_RECORD_TO_STORE,
+    type: ADD_RECORD,
     record
   }
 }
