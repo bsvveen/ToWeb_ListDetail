@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Form from "react-jsonschema-form";
-import { postRecordToWebApi, addRecordToStore } from '../actions'
+import { updateRecord } from '../actions'
 import Schema from "../data/schemas/schema1.json";
 
 let EditRecordForm = ({ formData, onFormSubmit }) => {
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onFormSubmit: (formData) => { dispatch(addRecordToStore(formData)) }
+        onFormSubmit: (formData) => { dispatch(updateRecord(formData)) }
     }
 }
 

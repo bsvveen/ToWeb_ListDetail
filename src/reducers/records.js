@@ -5,28 +5,22 @@ import update from 'react'
 const record = (state = {}, action) => {
   switch (action.type) {
     case ADD_RECORD:
-        if (action.record.key === undefined) {
-          return Object.assign({}, action.record, {
-              key: createGuid()
-          });
-        }
-
-        if (state.key !== action.record.key)
-        {
-          return state;
-        }
-
-        return action.record;
+        return Object.assign({}, action.record, {
+            key: createGuid(),
+            title: 'A new record'
+        });
     case EDIT_RECORD:
         if (state.key !== action.key) {
-          return Object.assign({}, state, {
-            isDirty: false
-          });
+          return Object.assign({}, state, { isDirty: false });
         }
 
-        return Object.assign({}, state, {
-          isDirty: true
-        });
+        return Object.assign({}, state, { isDirty: true });
+    case UPDATE_RECORD:
+          if (state.key !== action.record.key) {
+              return Object.assign({}, state, { isDirty: false });
+          }
+
+          return Object.assign({}, action.record, { isDirty: false });
     default:
         return state;
   }
@@ -35,15 +29,12 @@ const record = (state = {}, action) => {
 const records = (state = [], action) => {
   switch (action.type) {
     case ADD_RECORD:
-        if (action.record.key === undefined) {
           return [
             ...state,
             record(undefined, action)
           ]
-        }
-
-        return state.map(t => record(t, action))
     case EDIT_RECORD:
+    case UPDATE_RECORD:
         return state.map(t => record(t, action))
     default:
         return state;

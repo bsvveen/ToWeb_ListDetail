@@ -1,6 +1,6 @@
 
 import fetch from 'isomorphic-fetch'
-import { apiUrl, SET_FILTER, GET_RECORDS_FROM_STORE, ADD_RECORD, RECEIVE_RECORD_FROM_WEBAPI, EDIT_RECORD} from "../data/constants"
+import { apiUrl, SET_FILTER, ADD_RECORD, EDIT_RECORD, UPDATE_RECORD, RECEIVE_RECORDS } from "../data/constants"
 
 export const setFilter = (filter) => {
   return {
@@ -9,21 +9,28 @@ export const setFilter = (filter) => {
   }
 }
 
-export const getRecordsFromStore = () => {
+export const addRecord = (record) => {
   return {
-    type: GET_RECORDS_FROM_STORE
+    type: ADD_RECORD,
+    record
   }
 }
 
-export const receiveRecordFromWebAPi = (record) => {
+export const editRecord = (key) => {
   return {
-    type: RECEIVE_RECORD_FROM_WEBAPI,
-    record, //json.data.children.map(child => child.data),
-    receivedAt: Date.now()
+    type: EDIT_RECORD,
+    key
   }
 }
 
-export const getRecordsFromWebApi = () => {
+export const updateRecord = (record) => {
+  return {
+    type: UPDATE_RECORD,
+    record
+  }
+}
+
+export const requestRecordsFromWebAPi = () => {
   return function (dispatch) {
 
     return fetch(apiUrl + 'GetAll', {
@@ -33,23 +40,20 @@ export const getRecordsFromWebApi = () => {
         'Content-Type': 'application/json'
       }
     }).then(response => response.json())
-      .then(json => dispatch(receiveRecordFromWebAPi(json))
+      .then(json => dispatch(receiveRecordsFromWebAPi(json))
       )
     }
 }
 
-export const addRecordToStore = (record) => {
+export const receiveRecordsFromWebAPi = (records) => {
   return {
-    type: ADD_RECORD,
-    record
+    type: RECEIVE_RECORDS,
+    records
   }
 }
 
 export const postRecordToWebApi = (record) => {
   return function (dispatch) {
-
-    dispatch(addRecordToStore(record))
-
     return fetch(apiUrl + 'Post/' + record.key, {
       method: 'POST',
       headers: {
@@ -63,9 +67,9 @@ export const postRecordToWebApi = (record) => {
     }
 }
 
-export const editRecord = (key) => {
+export const receiveRecordFromWebAPi = (record) => {
   return {
-    type: EDIT_RECORD,
-    key
+    type: RECEIVE_RECORD,
+    record
   }
 }

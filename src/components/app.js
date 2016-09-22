@@ -3,6 +3,7 @@ import React from 'react'
 import Footer from './footer'
 import EditRecord from '../containers/editrecord'
 import RecordList from '../containers/recordlist'
+import AddRecord from '../containers/addrecord'
 
 import logo from '../logo.svg';
 import '../style.css';
@@ -14,6 +15,7 @@ const App = () => (
       <h2>Welcome to React</h2>
     </div>
     <EditRecord />
+    <AddRecord />
     <RecordList />
     <Footer />
   </div>
