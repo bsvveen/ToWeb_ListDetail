@@ -30,44 +30,14 @@ export const updateRecord = (record) => {
   }
 }
 
-export const requestRecordsFromWebAPi = () => {
-  return function (dispatch) {
-
-    return fetch(apiUrl + 'GetAll', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }).then(response => response.json())
-      .then(json => dispatch(receiveRecordsFromWebAPi(json))
-      )
-    }
-}
-
-export const receiveRecordsFromWebAPi = (records) => {
+export const sendRecordToAPI = (records) => {
   return {
     type: RECEIVE_RECORDS,
-    records
+    record
   }
 }
 
-export const postRecordToWebApi = (record) => {
-  return function (dispatch) {
-    return fetch(apiUrl + 'Post/' + record.key, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(record)
-    }).then(response => response.json())
-      .then(json => dispatch(receiveRecordFromWebAPi(json))
-      )
-    }
-}
-
-export const receiveRecordFromWebAPi = (record) => {
+export const receiveRecordFromAPi = (record) => {
   return {
     type: RECEIVE_RECORD,
     record
