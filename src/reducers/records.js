@@ -1,6 +1,5 @@
 
 import { ADD_RECORD, EDIT_RECORD, UPDATE_RECORD  } from "../data/constants"
-import update from 'react'
 
 const record = (state = {}, action) => {
   switch (action.type) {

@@ -1,10 +1,10 @@
 
-import { Map } from 'immutable';
-import compare from './compare-immutable-maps';
-import fetch from 'isomorphic-fetch'
-import { apiUrl } from "../data/constants"
+import { sendRecordToAPI } from '../actions';
 
-export diffMiddleware = store => next => action => {
+const diffMiddleware = store => next => action => {
+
+    console.log('Starting diffMiddleware');
+
     const { getState, dispatch } = store;
     // Get state before
     const before = getState();
@@ -14,40 +14,11 @@ export diffMiddleware = store => next => action => {
     const after = getState();
 
     if (before.records !== after.records) {
-        diffRecords(before.records, after.records);
+        console.log('diffMiddleware:  store changed');
+        store.dispatch(sendRecordToAPI(action.record));
     }
 
     return results;
 };
 
-function diffRecords(before: Map, after: Map): Array<Object> {
-    // `compare` is some kind of algorithm to find adds / removals / modifications
-    const patches = compare(before, after).forEach(patch => {
-        const { key, value, op } = patch;
-
-        switch (op) {
-            case 'add':
-
-                dispatch(sendRecordToAPI(value)
-
-                return fetch(apiUrl + 'record', { method: 'POST' })
-                  .then(response => response.json())
-                  .then(json => dispatch(receiveRecordFromAPi(json)))
-                  .catch(error => dispatch(receiveRecordFromAPi(error)))
-
-                break;
-            case 'replace':
-                // Update a record
-
-                break;
-            case 'remove':
-                // Delete a record
-
-                break;
-        }
-    });
-
-    return patches;
-}
-
-
+export default diffMiddleware
