@@ -46,8 +46,8 @@ export const receiveErrorFromAPi = (error) => {
 }
 
 export function sendRecordToAPI(record) {
-  return function (dispatch) {
-    return fetch(apiUrl + 'record', { method: 'POST' })
+  return function (dispatch, record) {
+    return fetch(apiUrl, { method: 'POST', body: { 'key' : record.key, 'record' : record }})
       .then(response => response.json())
       .then(json => dispatch(receiveRecordFromAPi(json)))
       .catch(error => dispatch(receiveErrorFromAPi(error)))
