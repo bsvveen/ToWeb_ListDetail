@@ -46,10 +46,20 @@ export const receiveErrorFromAPi = (error) => {
 }
 
 export function sendRecordToAPI(record) {
-  return function (dispatch, record) {
-    return fetch(apiUrl, { method: 'POST', body: { 'key' : record.key, 'record' : record }})
-      .then(response => response.json())
-      .then(json => dispatch(receiveRecordFromAPi(json)))
-      .catch(error => dispatch(receiveErrorFromAPi(error)))
+  if (record !== 'undefined'){
+    return function (dispatch) {
+      console.log('sendRecordToAPI: ', record);
+      return fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+        		Key: record.key,
+        		Record: JSON.stringify(record)
+        	})
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveRecordFromAPi(json)))
+        .catch(error => dispatch(receiveErrorFromAPi(error)))
+    }
   }
 }
