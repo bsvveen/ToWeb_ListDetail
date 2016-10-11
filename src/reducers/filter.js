@@ -1,5 +1,5 @@
 
-import { SET_FILTER } from "../data/constants"
+import { SET_FILTER } from "../actions"
 
 const filter = (state = 'SHOW_ALL', action) => {
   switch (action.type) {

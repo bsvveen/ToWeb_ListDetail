@@ -1,14 +1,15 @@
 
 import React, { PropTypes } from 'react'
 
-const Record = ({ title, onClick }) => (
+const Record = ({ header, body, onClick }) => (
     <li onClick={onClick}>
-        {title}
+        {body.title}
     </li>
 )
 
 Record.propTypes = {
-    title: PropTypes.string.isRequired,
+    header: PropTypes.object.isRequired,
+    body: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired
 }
 

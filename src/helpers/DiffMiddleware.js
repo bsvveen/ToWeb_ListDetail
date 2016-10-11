@@ -1,5 +1,4 @@
 
-import { sendRecordToAPI } from '../actions';
 
 const diffMiddleware = store => next => action => {
 
@@ -15,7 +14,7 @@ const diffMiddleware = store => next => action => {
 
     if (before.records !== after.records) {
         console.log('diffMiddleware:  store changed');
-        store.dispatch(sendRecordToAPI(action.record));
+        //store.dispatch(sendRecordToAPI(action.record));
     }
 
     return results;

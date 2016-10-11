@@ -15,7 +15,8 @@ const logger = store => next => action => {
   return result
 }
 
-let store = createStore(
-  rootReducer,  applyMiddleware(thunkMiddleware,logger,diffMiddleware))render(    <Provider store={store}>
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  rootReducer,  { filter: 'SHOW_ALL', isfetching: false, records: [ { header: { isFetching: false, isDirty: false }, body: { key: '567183f4-f3d7-48a6-8057-aa00802fc9f2', title: 'Initial record'} } ] },  composeEnhancers(applyMiddleware(thunkMiddleware,logger,diffMiddleware)))render(    <Provider store={store}>
         <App/>
     </Provider>,    document.getElementById('root'));

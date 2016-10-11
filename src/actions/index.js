@@ -1,6 +1,16 @@
 
 import fetch from 'isomorphic-fetch'
-import { apiUrl, SET_FILTER, ADD_RECORD, EDIT_RECORD, UPDATE_RECORD, RECEIVE_RECORD, RECEIVE_ERROR } from "../data/constants"
+
+import { apiUrl } from '../data/constants'
+
+export const SET_FILTER = 'SET_FILTER';
+export const ADD_RECORD = 'ADD_RECORD';
+export const EDIT_RECORD = 'EDIT_RECORD';
+export const RECEIVE_RECORD = 'RECEIVE_RECORD';
+export const RECEIVE_RECORDS = 'RECEIVE_RECORDS';
+export const RECEIVE_ERROR = 'RECEIVE_ERROR';
+export const SAVING_RECORD = 'SAVE_RECORD';
+export const GETTING_RECORDS = 'GETTING_RECORDS';
 
 export const setFilter = (filter) => {
   return {
@@ -23,32 +33,43 @@ export const editRecord = (key) => {
   }
 }
 
-export const updateRecord = (record) => {
-  return {
-    type: UPDATE_RECORD,
-    record
-  }
-}
-
-export const receiveRecordFromAPi = (record) => {
+export const receiveRecord = (record) => {
   return {
     type: RECEIVE_RECORD,
     record
   }
 }
 
-export const receiveErrorFromAPi = (error) => {
-  console.log('receiveErrorFromAPi: ', record);
+export const receiveRecords = (records) => {
+  return {
+    type: RECEIVE_RECORDS,
+    records
+  }
+}
+
+export const receiveError = (error) => {
+  console.log('receiveErrorFromAPi: ', error);
   return {
     type: RECEIVE_ERROR,
     error
   }
 }
 
-export function sendRecordToAPI(record) {
-  if (record !== 'undefined'){
+export const savingRecord = (record) => {
+  return {
+    type: SAVING_RECORD,
+    record
+  }
+}
+
+export function saveRecord(record) {
+
+    console.log('saveRecord: ', record);
+
     return function (dispatch) {
-      console.log('sendRecordToAPI: ', record);
+
+      dispatch(savingRecord(record));
+
       return fetch(apiUrl, {
           method: 'POST',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -58,8 +79,29 @@ export function sendRecordToAPI(record) {
         	})
         })
         .then(response => response.json())
-        .then(json => dispatch(receiveRecordFromAPi(json)))
-        .catch(error => dispatch(receiveErrorFromAPi(error)))
+        .then(json => dispatch(receiveRecord(JSON.parse(json))))
+        .catch(error => dispatch(receiveError(error)))
     }
+}
+
+export const gettingRecords = () => {
+  return {
+    type: GETTING_RECORDS
   }
+}
+
+export function getRecords() {
+
+    console.log('getRecords');
+
+    return function (dispatch) {
+      dispatch(gettingRecords());
+      return fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(json => dispatch(receiveRecords(JSON.parse(json))))
+        .catch(error => dispatch(receiveError(error)))
+    }
 }

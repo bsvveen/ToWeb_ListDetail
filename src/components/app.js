@@ -4,6 +4,7 @@ import Footer from './footer'
 import EditRecord from '../containers/editrecord'
 import RecordList from '../containers/recordlist'
 import AddRecord from '../containers/addrecord'
+import GetRecords from '../containers/getrecords'
 
 import logo from '../logo.svg';
 import '../style.css';
@@ -16,6 +17,7 @@ const App = () => (
     </div>
     <EditRecord />
     <AddRecord />
+    <GetRecords />
     <RecordList />
     <Footer />
   </div>

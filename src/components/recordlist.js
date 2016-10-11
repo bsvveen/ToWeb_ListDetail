@@ -1,19 +1,19 @@
 
 import React, { PropTypes } from 'react'
-import Record from './record'   
+import Record from './record'
 
 const RecordList = ({ records, onRecordClick }) => (
   <ul>
     {records.map(record =>
-        <Record key={record.key} {...record} onClick={() => onRecordClick(record.key)} />
+        <Record key={record.body.key} {...record} onClick={() => onRecordClick(record.body.key)} />
     )}
   </ul>
 )
 
 RecordList.propTypes = {
     records: PropTypes.arrayOf(PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired
+        header: PropTypes.object.isRequired,
+        body: PropTypes.object.isRequired
     }).isRequired).isRequired,
     onRecordClick: PropTypes.func.isRequired
 }
