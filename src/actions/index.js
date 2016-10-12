@@ -78,6 +78,7 @@ export function saveRecord(record) {
         		Record: JSON.stringify(record)
         	})
         })
+        .then(handleErrors)
         .then(response => response.json())
         .then(json => dispatch(receiveRecord(JSON.parse(json))))
         .catch(error => dispatch(receiveError(error)))
@@ -100,8 +101,16 @@ export function getRecords() {
           method: 'GET',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
         })
+        .then(handleErrors)
         .then(response => response.json())
         .then(json => dispatch(receiveRecords(JSON.parse(json))))
         .catch(error => dispatch(receiveError(error)))
     }
+}
+
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
 }

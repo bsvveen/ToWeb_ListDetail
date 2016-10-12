@@ -1,7 +1,7 @@
 
-import { ADD_RECORD, EDIT_RECORD, UPDATE_RECORD, GETTING_RECORDS, SAVING_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS  } from "../actions"
+import { ADD_RECORD, EDIT_RECORD, UPDATE_RECORD, SAVING_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS  } from "../actions"
 
-const record = (state = { isFetching: false, isDirty: false, record }, action) => {
+const record = (state = { }, action) => {
   switch (action.type) {
     case ADD_RECORD:
         return Object.assign({}, state, {
@@ -13,23 +13,17 @@ const record = (state = { isFetching: false, isDirty: false, record }, action) =
           return Object.assign({}, state, { header: { isDirty: true } });
         }
 
-        return state;
-    case RECEIVE_RECORD:
-      if (state.body.key === action.record.key) {
-        return Object.assign({}, state, { body: action.record });
-      }
-
-      return state;
+        return Object.assign({}, state, { header: { isDirty: false } });;
     case SAVING_RECORD:
           if (state.body.key === action.record.key) {
-            var newState =  Object.assign({}, state, { header: { isFetching: true }, body: action.record });
+            var newState =  Object.assign({}, state, { header: { isDirty: false, isFetching: true }, body: action.record });
             return newState;
           }
 
           return state;
     case RECEIVE_RECORD:
           if (state.body.key === action.record.key) {
-            return Object.assign({}, state, { header: { isFetching: false }, body: action.record });
+            return Object.assign({}, state, { header: { isDirty: false, isFetching: false }, body: action.record });
           }
 
           return state;
@@ -47,6 +41,9 @@ const records = (state = [], action) => {
     case UPDATE_RECORD:
     case RECEIVE_RECORD:
         return state.map(t => record(t, action))
+    case RECEIVE_RECORDS:
+      var header = { header: { isDirty: false, isFetching: false }}
+      return action.records.map(t =>  Object.assign(header, t))
     default:
         return state;
   }
