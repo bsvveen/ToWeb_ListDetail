@@ -42,8 +42,8 @@ const records = (state = [], action) => {
     case RECEIVE_RECORD:
         return state.map(t => record(t, action))
     case RECEIVE_RECORDS:
-      var header = { header: { isDirty: false, isFetching: false }}
-      return action.records.map(t =>  Object.assign(header, t))
+      var header = { isDirty: false, isFetching: false };
+      return action.records.map(t =>  new Record(header, t))
     default:
         return state;
   }
@@ -52,6 +52,11 @@ const records = (state = [], action) => {
 export default records
 
 // private
+
+function Record(header, body) {
+  this.header = header;
+  this.body = body;
+}
 
 function createGuid()
 {

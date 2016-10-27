@@ -1,10 +1,12 @@
 
 import React from 'react'
-import thunkMiddleware from 'redux-thunk'
-import diffMiddleware from './helpers/diffMiddleware'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware  } from 'redux'
+
+import thunkMiddleware from 'redux-thunk'
+import diffMiddleware from './helpers/diffMiddleware'
+
 import rootReducer from './reducers'
 import App from './components/app'
 
