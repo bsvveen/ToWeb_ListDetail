@@ -8,9 +8,9 @@ const getRecords = (records, filter) => {
     case 'SHOW_ALL':
         return records;
     case 'SHOW_COMPLETED':
-        return records.filter(t => t.completed);
+        return records.filter(t => t.body.done);
     case 'SHOW_ACTIVE':
-        return records.filter(t => !t.completed);
+        return records.filter(t => !t.body.done);
     default:
         return records;
   }

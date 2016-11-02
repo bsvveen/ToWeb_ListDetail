@@ -1,6 +1,6 @@
 
 export const schema = {
-  "title": "Record",
+  "title": "",
   "type": "object",
   "required": ["title"],
   "properties": {

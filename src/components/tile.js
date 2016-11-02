@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 
 const Tile = ({ title, children }) => {
   if (title) {
-    title = <h3>{title}</h3>;
+    title = <div><h3>{title}</h3><hr /></div>
   }
 
   return (

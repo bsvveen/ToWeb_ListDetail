@@ -17,14 +17,15 @@ const App = () => (
       <h2 className="pull-left">Welcome to React</h2>
     </Tile>
     <Tile title="Detail">
-      <EditRecord />
-      <AddRecord />
-      <GetRecords />
+      <EditRecord />      
     </Tile>
     <Tile title="List">
+      <AddRecord />
+      <GetRecords />
       <RecordList />
+      <Footer />
     </Tile>
-    <Footer />
+
   </div>
 )
 
