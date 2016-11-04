@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onRecordClick: (key) => { dispatch(editRecord(key)) }
+    onRecordClick: (record) => { dispatch(editRecord(record)) }
   }
 }
 

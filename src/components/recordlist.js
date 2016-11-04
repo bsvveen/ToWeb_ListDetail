@@ -5,7 +5,7 @@ import Record from './record'
 const RecordList = ({ records, onRecordClick }) => (
   <ul>
     {records.map(record =>
-        <Record key={record.body.key} {...record} onClick={() => onRecordClick(record.body.key)} />
+        <Record key={record.body.key} {...record} onClick={() => onRecordClick(record)} />
     )}
   </ul>
 )

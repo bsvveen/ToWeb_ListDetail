@@ -10,16 +10,11 @@ let EditRecordForm = ({ formData, onFormSubmit }) => {
 }
 
 const mapStateToProps = (state) => {
-    var dirtyRecord = state.records.filter(t => t.header.isDirty).map(t => t.body)[0];
-    return {
-        formData: dirtyRecord
-    }
+    return { formData: state.detail.body }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        onFormSubmit: (formData) => { dispatch(saveRecord(formData)) }
-    }
+    return { onFormSubmit: (formData) => { dispatch(saveRecord(formData)) } }
 }
 
 const EditRecord = connect(

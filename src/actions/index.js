@@ -26,10 +26,10 @@ export const addRecord = (record) => {
   }
 }
 
-export const editRecord = (key) => {
+export const editRecord = (record) => {
   return {
     type: EDIT_RECORD,
-    key
+    record
   }
 }
 
