@@ -3,7 +3,7 @@ import React from 'react'
 import Footer from './footer'
 import EditRecord from '../containers/editrecord'
 import RecordList from '../containers/recordlist'
-import AddRecord from '../containers/addrecord'
+import NewRecord from '../containers/newrecord'
 import GetRecords from '../containers/getrecords'
 import Tile from '../components/tile'
 
@@ -17,10 +17,10 @@ const App = () => (
       <h2 className="pull-left">Welcome to React</h2>
     </Tile>
     <Tile title="Detail">
-      <EditRecord />      
+      <EditRecord />
+      <NewRecord />
     </Tile>
     <Tile title="List">
-      <AddRecord />
       <GetRecords />
       <RecordList />
       <Footer />

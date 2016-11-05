@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch'
 import { apiUrl } from '../data/constants'
 
 export const SET_FILTER = 'SET_FILTER';
+export const NEW_RECORD = 'NEW_RECORD';
 export const ADD_RECORD = 'ADD_RECORD';
 export const EDIT_RECORD = 'EDIT_RECORD';
 export const RECEIVE_RECORD = 'RECEIVE_RECORD';
@@ -16,6 +17,13 @@ export const setFilter = (filter) => {
   return {
     type: SET_FILTER,
     filter
+  }
+}
+
+export const newRecord = (record) => {
+  console.log('action newRecord');
+  return {
+    type: NEW_RECORD
   }
 }
 
@@ -69,6 +77,7 @@ export function saveRecord(record) {
     return function (dispatch) {
 
       dispatch(savingRecord(record));
+      dispatch(addRecord(record));
 
       return fetch(apiUrl, {
           method: 'POST',
