@@ -1,18 +1,16 @@
 
-import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS  } from "../actions"
+import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD } from "../actions"
 
 const record = (state = { }, action) => {
   switch (action.type) {
     case EDIT_RECORD:
-        if (state.body.key === action.key) {
-          return Object.assign({}, state, { header: { isDirty: true } });
-        }
-        return Object.assign({}, state, { header: { isDirty: false } });
+        return Object.assign({}, state, { header: { isDirty: true } });
     case RECEIVE_RECORD:
-          if (state.body.key === action.record.key) {
-            return Object.assign({}, state, { header: { isDirty: false, isValidated: true, isFetching: false }, body: action.record });
-          }
-          return state;
+        let record = Object.assign({}, state, { body: action.record.body , header: { isFetching: false } });
+        return record;
+    case UPDATE_RECORD:
+        let x =  Object.assign({}, state, { body: action.record.body , header: { isDirty: false } });
+        return x;
     default:
         return state;
   }
@@ -20,15 +18,17 @@ const record = (state = { }, action) => {
 
 const records = (state = [], action) => {
   switch (action.type) {
-    case ADD_RECORD:
-      var header = { isValidated: false, isFetching: false, isDirty: false };
-      return [ ...state,  new Record(header, action.record)];    
     case RECEIVE_RECORDS:
-      var header = { isValidated: true, isFetching: false };
-      return action.records.map(t =>  new Record(header, t));
+      return action.records;
+    case UPDATE_RECORD:
+      if (state.map((t) => t.body.key).includes(action.record.body.key)) {
+        return state.map((t) => { if (t.body.key === action.record.body.key) { return record(t, action); } else { return t; }});
+      } else {
+        return [ ...state, action.record];
+      }
     case EDIT_RECORD:
     case RECEIVE_RECORD:
-          return state.map(t => record(t, action));
+      return state.map((t) => { if (t.body.key === action.record.body.key) { return record(t, action); } else { return t; }});
     default:
         return state;
   }

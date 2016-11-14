@@ -10,7 +10,7 @@ export const EDIT_RECORD = 'EDIT_RECORD';
 export const RECEIVE_RECORD = 'RECEIVE_RECORD';
 export const RECEIVE_RECORDS = 'RECEIVE_RECORDS';
 export const RECEIVE_ERROR = 'RECEIVE_ERROR';
-export const SAVING_RECORD = 'SAVE_RECORD';
+export const UPDATE_RECORD = 'UPDATE_RECORD';
 export const GETTING_RECORDS = 'GETTING_RECORDS';
 
 export const setFilter = (filter) => {
@@ -20,17 +20,11 @@ export const setFilter = (filter) => {
   }
 }
 
-export const newRecord = (record) => {
+export const newRecord = () => {
   console.log('action newRecord');
   return {
-    type: NEW_RECORD
-  }
-}
-
-export const addRecord = (record) => {
-  return {
-    type: ADD_RECORD,
-    record
+    type: NEW_RECORD,
+    record: { header: { isFetching: false, isValidated: false,isDirty: false },  body: { key: createGuid(), title: 'A new record' } }
   }
 }
 
@@ -63,21 +57,20 @@ export const receiveError = (error) => {
   }
 }
 
-export const savingRecord = (record) => {
+export const updatingRecord = (record) => {
   return {
-    type: SAVING_RECORD,
+    type: UPDATE_RECORD,
     record
   }
 }
 
-export function saveRecord(record) {
+export function updateRecord(record) {
 
-    console.log('saveRecord: ', record);
+    console.log('updateRecord: ', record);
 
     return function (dispatch) {
 
-      dispatch(savingRecord(record));
-      dispatch(addRecord(record));
+      dispatch(updatingRecord(record));
 
       return fetch(apiUrl, {
           method: 'POST',
@@ -122,4 +115,12 @@ function handleErrors(response) {
         throw Error(response.statusText);
     }
     return response;
+}
+
+function createGuid()
+{
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
 }

@@ -3,18 +3,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Form from "react-jsonschema-form";
 import { schema, uischema } from "../data/schemas/schema1";
-import { saveRecord } from '../actions'
+import { updateRecord } from '../actions'
 
-let EditRecordForm = ({ formData, onFormSubmit }) => {
-    return (<Form schema={schema} uiSchema={uischema} formData={formData} onSubmit={e => onFormSubmit(e.formData)}  onError={ e => console.log(e) } />)
+const EditRecordForm = ({ record, onFormSubmit }) => {
+    let onSubmit = (formData) => { onFormSubmit(new Record(record.header, formData)); };
+    return (<Form schema={schema} uiSchema={uischema} formData={record.body} onSubmit={e => onSubmit(e.formData)}  onError={ e => console.log(e) } />)
 }
 
 const mapStateToProps = (state) => {
-    return { formData: state.detail.body }
+    return { record: state.detail }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return { onFormSubmit: (formData) => { dispatch(saveRecord(formData)) } }
+    return { onFormSubmit: (record) => { dispatch(updateRecord(record)) } }
 }
 
 const EditRecord = connect(
@@ -23,3 +24,10 @@ const EditRecord = connect(
 )(EditRecordForm);
 
 export default EditRecord
+
+// private
+
+function Record(header, body) {
+  this.header = header;
+  this.body = body;
+}

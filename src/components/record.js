@@ -2,9 +2,12 @@
 import React, { PropTypes } from 'react'
 
 const Record = ({ header, body, onClick }) => (
-    <li onClick={onClick}>
+    <div onClick={onClick}>
         {body.title}
-    </li>
+        <span className={header.isFetching ? 'glyphicon glyphicon-refresh' : 'hidden'}></span>
+        <span className={header.isDirty ? 'glyphicon glyphicon-lock' : 'hidden'} ></span>
+        <span className={header.isValidated ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'} ></span>
+    </div>
 )
 
 Record.propTypes = {
