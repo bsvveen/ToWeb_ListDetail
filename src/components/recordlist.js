@@ -2,12 +2,12 @@
 import React, { PropTypes } from 'react'
 import Record from './record'
 
-const RecordList = ({ records, onRecordClick }) => (
-  <ul>
+const RecordList = ({ records, onEditClick, onDelClick}) => (
+  <table className="table table-bordered table-striped table-hover"><tbody>
     {records.map(record =>
-        <Record key={record.body.key} {...record} onClick={() => onRecordClick(record)} />
+        <Record key={record.body.key} {...record} onEditClick={() => onEditClick(record)} onDelClick={() => onDelClick(record)}/>
     )}
-  </ul>
+  </tbody></table>
 )
 
 RecordList.propTypes = {
@@ -15,7 +15,8 @@ RecordList.propTypes = {
         header: PropTypes.object.isRequired,
         body: PropTypes.object.isRequired
     }).isRequired).isRequired,
-    onRecordClick: PropTypes.func.isRequired
+    onEditClick: PropTypes.func.isRequired,
+    onDelClick: PropTypes.func.isRequired
 }
 
 export default RecordList

@@ -7,6 +7,8 @@ export const SET_FILTER = 'SET_FILTER';
 export const NEW_RECORD = 'NEW_RECORD';
 export const ADD_RECORD = 'ADD_RECORD';
 export const EDIT_RECORD = 'EDIT_RECORD';
+export const DELETED_RECORD = 'DELETED_RECORD';
+export const DELETING_RECORD = 'DELETING_RECORD';
 export const RECEIVE_RECORD = 'RECEIVE_RECORD';
 export const RECEIVE_RECORDS = 'RECEIVE_RECORDS';
 export const RECEIVE_ERROR = 'RECEIVE_ERROR';
@@ -55,6 +57,39 @@ export const receiveError = (error) => {
     type: RECEIVE_ERROR,
     error
   }
+}
+
+export const deletingRecord = (record) => {
+  return {
+    type: DELETING_RECORD,
+    record
+  }
+}
+
+export const deletedRecord = (key) => {
+  return {
+    type: DELETED_RECORD,
+    key
+  }
+}
+
+export function deleteRecord(record) {
+
+    console.log('deleteRecord: ', record);
+
+    return function (dispatch) {
+
+      dispatch(deletingRecord(record));
+
+      return fetch(apiUrl + '?key=' + record.body.key, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }          
+        })
+        .then(handleErrors)
+        .then(response => response.json())
+        .then(json => dispatch(deletedRecord(record.body.key)))
+        .catch(error => dispatch(receiveError(error)))
+    }
 }
 
 export const updatingRecord = (record) => {

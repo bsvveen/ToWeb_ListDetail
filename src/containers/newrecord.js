@@ -5,7 +5,7 @@ import { newRecord } from '../actions'
 
 let newRecordButton = ({ onButtonClick }) => {
     return (
-      <button type='submit' className='btn btn-info margin' onClick={e => onButtonClick()}>New</button>
+      <button type='submit' className='btn btn-success margin' onClick={e => onButtonClick()}>New</button>
 )}
 
 const mapStateToProps = (state) => {

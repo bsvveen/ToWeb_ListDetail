@@ -1,5 +1,5 @@
 
-import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD } from "../actions"
+import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD,DELETED_RECORD } from "../actions"
 
 const record = (state = { }, action) => {
   switch (action.type) {
@@ -26,6 +26,8 @@ const records = (state = [], action) => {
       } else {
         return [ ...state, action.record];
       }
+    case DELETED_RECORD:
+        return state.filter(record => record.body.key !== action.key);
     case EDIT_RECORD:
     case RECEIVE_RECORD:
       return state.map((t) => { if (t.body.key === action.record.body.key) { return record(t, action); } else { return t; }});

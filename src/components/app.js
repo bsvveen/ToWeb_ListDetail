@@ -18,10 +18,10 @@ const App = () => (
     </Tile>
     <Tile title="Detail">
       <EditRecord />
-      <NewRecord />
     </Tile>
     <Tile title="List">
       <GetRecords />
+      <NewRecord />   
       <RecordList />
       <Footer />
     </Tile>

@@ -1,7 +1,7 @@
 
 import { connect } from 'react-redux'
 import recordList from '../components/recordlist'
-import { editRecord } from '../actions'
+import { editRecord, deleteRecord } from '../actions'
 
 const getRecords = (records, filter) => {
   switch (filter) {
@@ -24,7 +24,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onRecordClick: (record) => { dispatch(editRecord(record)) }
+    onEditClick: (record) => { dispatch(editRecord(record)) },
+    onDelClick: (record) => { dispatch(deleteRecord(record)) }
   }
 }
 
