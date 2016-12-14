@@ -11,13 +11,7 @@ const RecordList = ({ records, onEditClick, onDelClick}) => (
 )
 
 RecordList.propTypes = {
-    records: PropTypes.arrayOf(PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        isDirty: PropTypes.string.isRequired,
-        isValidated: PropTypes.string.isRequired,
-        isFetching: PropTypes.string.isRequired,
-        body: PropTypes.object.isRequired
-    }).isRequired).isRequired,
+    records: PropTypes.arrayOf(PropTypes.object).isRequired,
     onEditClick: PropTypes.func.isRequired,
     onDelClick: PropTypes.func.isRequired
 }

@@ -29,8 +29,6 @@ export default EditRecord
 
 function Record(body, record) {
   this.key = record.key;  
-  this.isDirty = record.isDirty;
-  this.isValidated = record.isValidated;
-  this.isFetching = record.isFetching;
+  this.state = record.state;  
   this.body = body;
 }

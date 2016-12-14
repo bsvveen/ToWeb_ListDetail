@@ -26,7 +26,7 @@ export const newRecord = () => {
   console.log('action newRecord');
   return {
     type: NEW_RECORD,
-    record: { key: createGuid(), header: { isFetching: false, isValidated: false, isDirty: false },  body: { title: 'A new record' } }
+    record: { key: createGuid(), state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { title: 'A new record' } }
   }
 }
 

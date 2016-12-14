@@ -4,12 +4,14 @@ import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD
 const record = (state = {}, action) => {
   switch (action.type) {
     case EDIT_RECORD: 
-        var statechange = {  'isDirty' : 'true' };
-        return Object.assign(state, statechange); 
+        var statechange = { 'state' : { 'isDirty' : true } };
+        return Object.assign({}, state, statechange); 
     case RECEIVE_RECORD: 
+        var statechange = { 'state' : { 'isFetching' : false, 'isDirty' : false }, 'body' : action.record.body };
+        return Object.assign({}, state, statechange); 
     case UPDATE_RECORD:   
-        var statechange = {  'isDirty' : 'false', 'body' : action.record.body };
-        return Object.assign(state, statechange); 
+        var statechange = { 'state' : { 'isFetching' : true }, 'body' : action.record.body };
+        return Object.assign({}, state, statechange); 
     default:
         return state;
   }
@@ -18,18 +20,18 @@ const record = (state = {}, action) => {
 const records = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_RECORDS:
-      return action.records;
+        return action.records;
     case UPDATE_RECORD:
       if (state.map((t) => t.key).includes(action.record.key)) {
         return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});
       } else {        
-        return state.push(Map(action.record));
+        return [...state, action.record];       
       }
     case DELETED_RECORD:
         return state.filter(record => record.key !== action.key);
     case EDIT_RECORD:
     case RECEIVE_RECORD:
-      return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});
+        return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});
     default:
         return state;
   }
