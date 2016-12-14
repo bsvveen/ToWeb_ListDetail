@@ -6,7 +6,7 @@ import { schema, uischema } from "../data/schemas/schema1";
 import { updateRecord } from '../actions'
 
 const EditRecordForm = ({ record, onFormSubmit }) => {
-    let onSubmit = (formData) => { onFormSubmit(new Record(record.header, formData)); };
+    let onSubmit = (formData) => { onFormSubmit(new Record(formData, record)); };
     return (<Form schema={schema} uiSchema={uischema} formData={record.body} onSubmit={e => onSubmit(e.formData)}  onError={ e => console.log(e) } />)
 }
 
@@ -27,7 +27,10 @@ export default EditRecord
 
 // private
 
-function Record(header, body) {
-  this.header = header;
+function Record(body, record) {
+  this.key = record.key;  
+  this.isDirty = record.isDirty;
+  this.isValidated = record.isValidated;
+  this.isFetching = record.isFetching;
   this.body = body;
 }

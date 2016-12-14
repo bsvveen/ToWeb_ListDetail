@@ -26,7 +26,7 @@ export const newRecord = () => {
   console.log('action newRecord');
   return {
     type: NEW_RECORD,
-    record: { header: { isFetching: false, isValidated: false,isDirty: false },  body: { key: createGuid(), title: 'A new record' } }
+    record: { key: createGuid(), header: { isFetching: false, isValidated: false, isDirty: false },  body: { title: 'A new record' } }
   }
 }
 
@@ -81,13 +81,13 @@ export function deleteRecord(record) {
 
       dispatch(deletingRecord(record));
 
-      return fetch(apiUrl + '?key=' + record.body.key, {
+      return fetch(apiUrl + '?key=' + record.key, {
           method: 'DELETE',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }          
         })
         .then(handleErrors)
         .then(response => response.json())
-        .then(json => dispatch(deletedRecord(record.body.key)))
+        .then(json => dispatch(deletedRecord(record.key)))
         .catch(error => dispatch(receiveError(error)))
     }
 }

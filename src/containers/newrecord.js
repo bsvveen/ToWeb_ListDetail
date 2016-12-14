@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { newRecord } from '../actions'
 
 let newRecordButton = ({ onButtonClick }) => {
-    return (
-      <button type='submit' className='btn btn-success margin' onClick={e => onButtonClick()}>New</button>
-)}
+    return (<button type='submit' className='btn btn-success margin' onClick={e => onButtonClick()}>New</button>)
+}
 
 const mapStateToProps = (state) => {
     return {}
