@@ -1,17 +1,18 @@
 
+import _ from "lodash"
 import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD,DELETED_RECORD } from "../actions"
 
 const record = (state = {}, action) => {
   switch (action.type) {
     case EDIT_RECORD: 
         var statechange = { 'state' : { 'isDirty' : true } };
-        return Object.assign({}, state, statechange); 
+        return _.merge({}, state, statechange); 
     case RECEIVE_RECORD: 
-        var statechange = { 'state' : { 'isFetching' : false, 'isDirty' : false }, 'body' : action.record.body };
-        return Object.assign({}, state, statechange); 
+        var statechange = { 'state' : { 'isFetching' : false, 'isDirty' : false }, 'body' : action.record.body };        
+        return _.merge({}, state, statechange)        
     case UPDATE_RECORD:   
         var statechange = { 'state' : { 'isFetching' : true }, 'body' : action.record.body };
-        return Object.assign({}, state, statechange); 
+        return _.merge({}, state, statechange); 
     default:
         return state;
   }
