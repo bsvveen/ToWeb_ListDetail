@@ -7,14 +7,10 @@ let newRecordButton = ({ onButtonClick }) => {
     return (<button type='submit' className='btn btn-success margin' onClick={e => onButtonClick()}>New</button>)
 }
 
-const mapStateToProps = (state) => {
-    return {}
-}
+const mapStateToProps = (state) => { return {} }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        onButtonClick: () => { dispatch(newRecord()) }
-    }
+    return { onButtonClick: () => { dispatch(newRecord()) }}
 }
 
 const NewRecord = connect(

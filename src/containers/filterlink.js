@@ -4,17 +4,11 @@ import { setFilter } from '../actions'
 import Link from '../components/link'
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    active: ownProps.filter === state.visibilityFilter
-  }
+  return { active: ownProps.filter === state.visibilityFilter }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onClick: () => {
-      dispatch(setFilter(ownProps.filter))
-    }
-  }
+  return { onClick: () => { dispatch(setFilter(ownProps.filter)) } }
 }
 
 const FilterLink = connect(

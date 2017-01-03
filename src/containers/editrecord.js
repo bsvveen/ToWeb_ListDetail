@@ -1,12 +1,12 @@
 
 import React from 'react'
-import { connect } from 'react-redux'
 import Form from "react-jsonschema-form";
+import { connect } from 'react-redux';
 import { schema, uischema } from "../data/schemas/schema1";
-import { updateRecord } from '../actions'
+import { updateRecord } from '../actions';
 
 const EditRecordForm = ({ record, onFormSubmit }) => {
-    let onSubmit = (formData) => { onFormSubmit(new Record(formData, record)); };
+    let onSubmit = (formData) => { onFormSubmit(new Record(formData, record.state)); };
     return (<Form schema={schema} uiSchema={uischema} formData={record.body} onSubmit={e => onSubmit(e.formData)}  onError={ e => console.log(e) } />)
 }
 
@@ -27,8 +27,7 @@ export default EditRecord
 
 // private
 
-function Record(body, record) {
-  this.key = record.key;  
+function Record(body, state) {  
   this.state = record.state;  
   this.body = body;
 }

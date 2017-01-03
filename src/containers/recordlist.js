@@ -17,9 +17,7 @@ const getRecords = (records, filter) => {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    records: getRecords(state.records, state.filter)
-  }
+  return { records: getRecords(state.records, state.filter) }
 }
 
 const mapDispatchToProps = (dispatch) => {

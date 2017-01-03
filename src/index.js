@@ -19,6 +19,14 @@ const logger = store => next => action => {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-  rootReducer,  { filter: 'SHOW_ALL', isfetching: false },  composeEnhancers(applyMiddleware(thunkMiddleware,logger,diffMiddleware)))render(    <Provider store={store}>
-        <App/>
-    </Provider>,    document.getElementById('root'));
+  rootReducer,
+  { filter: 'SHOW_ALL', isfetching: false },
+  composeEnhancers(applyMiddleware(thunkMiddleware,logger,diffMiddleware))
+)
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);

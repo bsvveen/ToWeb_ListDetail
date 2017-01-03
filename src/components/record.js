@@ -1,11 +1,11 @@
 
 import React, { PropTypes } from 'react'
 
-const Record = ({ key, state, body, onEditClick, onDelClick }) => (
+const Record = ({ state, body, onEditClick, onDelClick }) => (
     <tr>
         <td>
-          {body.title} <br />
-          <i>{key}</i>
+          {body.title}<br />
+          <i>{body.key}</i>
         </td><td>
           <span className={state.isFetching ? 'glyphicon glyphicon-refresh' : 'hidden'}></span>
           <span className={state.isDirty ? 'glyphicon glyphicon-lock' : 'hidden'} ></span>
@@ -18,8 +18,7 @@ const Record = ({ key, state, body, onEditClick, onDelClick }) => (
     </tr>
 )
 
-Record.propTypes = {
-    key: PropTypes.string.isRequired,    
+Record.propTypes = {       
     state: PropTypes.object.isRequired,         
     body: PropTypes.object.isRequired,
     onEditClick: PropTypes.func.isRequired,

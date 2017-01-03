@@ -23,16 +23,16 @@ const records = (state = [], action) => {
     case RECEIVE_RECORDS:
         return action.records;
     case UPDATE_RECORD:
-      if (state.map((t) => t.key).includes(action.record.key)) {
-        return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});
+      if (state.map((t) => t.key).includes(action.record.body.key)) {
+        return state.map((t) => { if ( t.key === action.record.body.key) { return record(t, action); } else { return t; }});
       } else {        
         return [...state, action.record];       
       }
     case DELETED_RECORD:
-        return state.filter(record => record.key !== action.key);
+        return state.filter(record => record.key !== action.body.key);
     case EDIT_RECORD:
     case RECEIVE_RECORD:
-        return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});
+        return state.map((t) => { if ( t.key === action.record.body.key) { return record(t, action); } else { return t; }});
     default:
         return state;
   }

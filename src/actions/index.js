@@ -1,7 +1,7 @@
 
 import fetch from 'isomorphic-fetch'
-
 import { apiUrl } from '../data/constants'
+import { $http } from '../helpers/xmlHttpRequest'
 
 export const SET_FILTER = 'SET_FILTER';
 export const NEW_RECORD = 'NEW_RECORD';
@@ -26,7 +26,7 @@ export const newRecord = () => {
   console.log('action newRecord');
   return {
     type: NEW_RECORD,
-    record: { key: createGuid(), state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { title: 'A new record' } }
+    record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { key: createGuid(), title: 'A new record' } }
   }
 }
 
@@ -81,7 +81,7 @@ export function deleteRecord(record) {
 
       dispatch(deletingRecord(record));
 
-      return fetch(apiUrl + '?key=' + record.key, {
+      return fetch(apiUrl + '?key=' + record.body.key, {
           method: 'DELETE',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }          
         })
@@ -107,18 +107,9 @@ export function updateRecord(record) {
 
       dispatch(updatingRecord(record));
 
-      return fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-        		Key: record.key,
-        		Record: JSON.stringify(record)
-        	})
-        })
-        .then(handleErrors)
-        .then(response => response.json())
-        .then(json => dispatch(receiveRecord(JSON.parse(json))))
-        .catch(error => dispatch(receiveError(error)))
+      return $http('Poco').post(record).then(
+        json => dispatch(receiveRecord(JSON.parse(json)))
+      );        
     }
 }
 
