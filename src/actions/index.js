@@ -1,7 +1,5 @@
 
-import fetch from 'isomorphic-fetch'
-import { apiUrl } from '../data/constants'
-import { $http } from '../helpers/xmlHttpRequest'
+import httpRequest from '../helpers/xmlHttpRequest'
 
 export const SET_FILTER = 'SET_FILTER';
 export const NEW_RECORD = 'NEW_RECORD';
@@ -24,9 +22,10 @@ export const setFilter = (filter) => {
 
 export const newRecord = () => {
   console.log('action newRecord');
+  var key = createGuid();
   return {
     type: NEW_RECORD,
-    record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { key: createGuid(), title: 'A new record' } }
+    key: key, record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { key: key, title: 'A new record' } }
   }
 }
 
@@ -37,10 +36,10 @@ export const editRecord = (record) => {
   }
 }
 
-export const receiveRecord = (record) => {
+export const receiveRecord = (key, record) => {
   return {
     type: RECEIVE_RECORD,
-    record
+    key, record
   }
 }
 
@@ -59,10 +58,10 @@ export const receiveError = (error) => {
   }
 }
 
-export const deletingRecord = (record) => {
+export const deletingRecord = (key, record) => {
   return {
     type: DELETING_RECORD,
-    record
+    key, record
   }
 }
 
@@ -73,15 +72,15 @@ export const deletedRecord = (key) => {
   }
 }
 
-export function deleteRecord(record) {
+export function deleteRecord(key, record) {
 
     console.log('deleteRecord: ', record);
 
     return function (dispatch) {
 
-      dispatch(deletingRecord(record));
+      dispatch(deletingRecord(key, record));
 
-      return fetch(apiUrl + '?key=' + record.body.key, {
+      return fetch(apiUrl + '?key=' + key, {
           method: 'DELETE',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }          
         })
@@ -92,23 +91,23 @@ export function deleteRecord(record) {
     }
 }
 
-export const updatingRecord = (record) => {
+export const updatingRecord = (key, record) => {
   return {
     type: UPDATE_RECORD,
-    record
+    key, record
   }
 }
 
-export function updateRecord(record) {
+export function updateRecord(key, record) {
 
     console.log('updateRecord: ', record);
 
     return function (dispatch) {
 
-      dispatch(updatingRecord(record));
+      dispatch(updatingRecord(key, record));
 
-      return $http('Poco').post(record).then(
-        json => dispatch(receiveRecord(JSON.parse(json)))
+      return httpRequest('Poco').post(record.body).then(
+        json => dispatch(receiveRecord(key, JSON.parse(json)))
       );        
     }
 }

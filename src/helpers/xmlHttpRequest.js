@@ -1,20 +1,23 @@
 
-var $http = function (url) {
+import { apiUrl } from '../data/constants'
+
+const httpRequest = url => { 
 
     var core = {
         ajax: function (method, url, args) {
             return new Promise(function (resolve) {                
 
-                url = 'http://localhost:50870/Api/' + url;
+                url = apiUrl + url;
+                var data = {};
 
-                if (args != undefined) {
-                    switch(expression) {
+                if (args !== undefined) {
+                    switch(method) {
                         case 'GET':
                             url += "?" + serialize(args);
                             break;
                         case 'POST':
                         case 'PUT':
-                             data = JSON.stringify(args);
+                            data = JSON.stringify(args);
                             break;                       
                     }
                 }    
@@ -26,8 +29,8 @@ var $http = function (url) {
                 client.setRequestHeader("Cache-Control", "no-cache");  
 
                 client.onreadystatechange = function() {
-                    if (this.readyState == 4) {
-                        if (this.status == 200) {
+                    if (this.readyState === 4) {
+                        if (this.status === 200) {
                             resolve(JSON.parse(this.response));
                         } else {
                             alert(JSON.stringify(this.response));
@@ -39,6 +42,15 @@ var $http = function (url) {
             });
         }
     };
+
+    var serialize = function (obj) {
+        var str = [];
+        for (var p in obj)
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+        return str.join("&");
+    }
    
     return {
         'get': function (args) {
@@ -56,11 +68,4 @@ var $http = function (url) {
     };   
 };
 
-serialize = function (obj) {
-    var str = [];
-    for (var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-    return str.join("&");
-}
+export default httpRequest;

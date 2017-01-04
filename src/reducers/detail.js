@@ -5,7 +5,7 @@ const detail = (state = {}, action) => {
   switch (action.type) {
     case NEW_RECORD:        
     case EDIT_RECORD:
-        return action.record;
+        return {key: action.key, record: action.record};
     case UPDATE_RECORD:
         return {};
     default:
