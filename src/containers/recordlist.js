@@ -22,8 +22,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onEditClick: (record) => { dispatch(editRecord(record.body.key, record)) },
-    onDelClick: (record) => { dispatch(deleteRecord(record.body.key, record)) }
+    onEditClick: (record) => { dispatch(editRecord(record)) },
+    onDelClick: (record) => { dispatch(deleteRecord(record.key)) }
   }
 }
 

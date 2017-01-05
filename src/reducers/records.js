@@ -1,18 +1,23 @@
 
 import _ from "lodash"
-import { ADD_RECORD, EDIT_RECORD, RECEIVE_RECORD, RECEIVE_RECORDS, UPDATE_RECORD,DELETED_RECORD } from "../actions"
+import { NEW_RECORD, EDIT_RECORD, UPDATING_RECORD, UPDATED_RECORD, DELETING_RECORD, DELETED_RECORD, GETTING_RECORDS, GOT_RECORDS } from "../actions"
 
 const record = (state = {}, action) => {
+  var statechange;
   switch (action.type) {
+    case NEW_RECORD:
+    case GOT_RECORDS: 
+        statechange = { 'state' : { 'isFetching' : false, 'isValidated': false, 'isDirty' : false} };   
+        return _.merge({}, state, statechange);     
     case EDIT_RECORD: 
-        var statechange = { 'state' : { 'isDirty' : true } };
+        statechange = { 'state' : { 'isFetching' : false, 'isValidated': false, 'isDirty' : true} };   
+        return _.merge({}, state, statechange);     
+    case UPDATING_RECORD:   
+        statechange = { 'state' : { 'isFetching' : true, 'isValidated': false, 'isDirty' : true} };    
         return _.merge({}, state, statechange); 
-    case RECEIVE_RECORD:   
-    case RECEIVE_RECORDS:             
-        return { 'state': { isFetching: false, isValidated: true, isDirty: false, hasError: false, errors:[] }, 'body' : state };     
-    case UPDATE_RECORD:   
-        var statechange = { 'state' : { 'isFetching' : true }, 'body' : action.record.body };
-        return _.merge({}, state, statechange); 
+    case UPDATED_RECORD:   
+        statechange = { 'state' : { 'isFetching' : false, 'isValidated': true, 'isDirty' : false} };    
+        return _.merge({}, action.record, statechange);  
     default:
         return state;
   }
@@ -20,19 +25,16 @@ const record = (state = {}, action) => {
 
 const records = (state = [], action) => { 
   switch (action.type) {
-    case RECEIVE_RECORDS:
-        return action.records.map((t) => { return record(t, action) });
-    case UPDATE_RECORD:
-      if (state.map((t) => t.key).includes(action.key)) {
-        return state.map((t) => { if ( t.key === action.key) { return record(t, action); } else { return t; }});
-      } else {        
-        return [...state, action.record];       
-      }
+    case GOT_RECORDS:        
+        return action.records((t) => { return record(t, action); });   
     case DELETED_RECORD:
         return state.filter(record => record.key !== action.key);
+    case NEW_RECORD:
+        return [...state, record(action.record, action)];
+    case UPDATING_RECORD:        
     case EDIT_RECORD:
-    case RECEIVE_RECORD:
-        return state.map((t) => { if ( t.key === action.key) { return record(t, action); } else { return t; }});
+    case UPDATED_RECORD:
+        return state.map((t) => { if ( t.key === action.key) { return record(t, action); } else { return t; }});        
     default:
         return state;
   }

@@ -1,19 +1,11 @@
 
+import _ from "lodash"
 import httpRequest from '../helpers/xmlHttpRequest'
 
-export const SET_FILTER = 'SET_FILTER';
-export const NEW_RECORD = 'NEW_RECORD';
-export const ADD_RECORD = 'ADD_RECORD';
-export const EDIT_RECORD = 'EDIT_RECORD';
-export const DELETED_RECORD = 'DELETED_RECORD';
-export const DELETING_RECORD = 'DELETING_RECORD';
-export const RECEIVE_RECORD = 'RECEIVE_RECORD';
-export const RECEIVE_RECORDS = 'RECEIVE_RECORDS';
-export const RECEIVE_ERROR = 'RECEIVE_ERROR';
-export const UPDATE_RECORD = 'UPDATE_RECORD';
-export const GETTING_RECORDS = 'GETTING_RECORDS';
 
 // FILTER
+
+export const SET_FILTER = 'SET_FILTER';
 
 export const setFilter = (filter) => {
   return {
@@ -24,55 +16,71 @@ export const setFilter = (filter) => {
 
 // NEW
 
-export const newRecord = () => {
-  console.log('action newRecord');
-  var key = createGuid();
+export const NEW_RECORD = 'NEW_RECORD';
+
+export const newRecord = () => {  
   return {
     type: NEW_RECORD,
-    key: key, record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { key: key, title: 'A new record' } }
+    record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { title: 'A new record' } }
   }
 }
 
 // EDIT
 
-export const editRecord = (key, record) => {
+export const EDIT_RECORD = 'EDIT_RECORD';
+
+export const editRecord = (record) => {
   return {
     type: EDIT_RECORD,
-    key: key, record: record
+    record
   }
 }
 
 // UPDATE
 
-export const updatingRecord = (key, record) => {
+export const UPDATING_RECORD = 'UPDATING_RECORD';
+
+export const updatingRecord = (record) => {
   return {
-    type: UPDATE_RECORD,
-    key, record
+    type: UPDATING_RECORD,
+    record
   }
 }
 
-export function updateRecord(key, record) {
+export const UPDATED_RECORD = 'UPDATE_RECORD';
+
+export const updatedRecord = (record, newbody) => {
+  return {
+    type: UPDATED_RECORD,
+    record: { key: newbody.key, state: record.state,  body: newbody }
+  }
+}
+
+export function updateRecord(record) {
     return function (dispatch) {
-      dispatch(updatingRecord(key, record));
-      return httpRequest('Poco').post(record.body).then(obj => dispatch(receiveRecord(key, obj))); 
-    }
-}
+      dispatch(updatingRecord(record));
+      
+      var data =  _.merge({}, record.body, { 'key' : record.key }); 
 
-export const receiveRecord = (key, record) => {
-  return {
-    type: RECEIVE_RECORD,
-    key, record
-  }
+      if (record.key)
+        return httpRequest('Poco').put(data).then(newbody => dispatch(updatedRecord(record, newbody))); 
+
+      return httpRequest('Poco').post(data).then(newbody => dispatch(updatedRecord(record, newbody))); 
+    }
 }
 
 // DELETE
 
-export const deletingRecord = (key, record) => {
+export const DELETING_RECORD = 'DELETING_RECORD';
+
+export const deletingRecord = (record) => {
   return {
     type: DELETING_RECORD,
-    key, record
+    record
   }
 }
+
+export const DELETED_RECORD = 'DELETED_RECORD';
 
 export const deletedRecord = (key) => {
   return {
@@ -81,14 +89,16 @@ export const deletedRecord = (key) => {
   }
 }
 
-export function deleteRecord(key, record) {  
+export function deleteRecord(key) {  
     return function (dispatch) {
-      dispatch(deletingRecord(key, record));
-      return httpRequest('Poco').delete(record.body.key).then(obj => dispatch(receiveRecord(key, obj))); 
+      dispatch(deletingRecord(key));
+      return httpRequest('Poco').delete(key).then(obj => dispatch(deletedRecord(key))); 
     }
 }
 
 // GET
+
+export const GETTING_RECORDS = 'GETTING_RECORDS';
 
 export const gettingRecords = () => {
   return {
@@ -96,27 +106,18 @@ export const gettingRecords = () => {
   }
 }
 
-export function getRecords() {   
-    return function (dispatch) {
-      dispatch(gettingRecords());
-      return httpRequest('Poco').get().then(obj => dispatch(receiveRecords(obj))); 
-    }     
-}
+export const GOT_RECORDS = 'GOT_RECORDS';
 
-export const receiveRecords = (records) => {
+export const gotRecords = (records) => {
   return {
-    type: RECEIVE_RECORDS,
+    type: GOT_RECORDS,
     records
   }
 }
 
-// Private
-
-
-function createGuid()
-{
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
+export function getRecords() {   
+    return function (dispatch) {
+      dispatch(gettingRecords());
+      return httpRequest('Poco').get().then(obj => dispatch(gotRecords(obj))); 
+    }     
 }

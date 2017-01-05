@@ -5,7 +5,7 @@ import Record from './record'
 const RecordList = ({ records, onEditClick, onDelClick}) => (
   <table className="table table-bordered table-striped table-hover"><tbody>
     {records.map(record =>
-        <Record key={record.body.key} {...record} onEditClick={() => onEditClick(record)} onDelClick={() => onDelClick(record)}/>
+        <Record key={record.key} {...record} onEditClick={() => onEditClick(record)} onDelClick={() => onDelClick(record)}/>
     )}
   </tbody></table>
 )

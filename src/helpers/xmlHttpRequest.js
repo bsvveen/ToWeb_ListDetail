@@ -3,6 +3,15 @@ import { apiUrl } from '../data/constants'
 
 const httpRequest = url => { 
 
+    var serialize = function (obj) {
+        var str = [];
+        for (var p in obj)
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+        return str.join("&");
+    }
+
     var core = {
         ajax: function (method, url, args) {
             return new Promise(function (resolve) {                
@@ -18,7 +27,9 @@ const httpRequest = url => {
                         case 'POST':
                         case 'PUT':
                             data = JSON.stringify(args);
-                            break;                       
+                            break; 
+                        default:
+                            break;                    
                     }
                 }    
 
@@ -41,16 +52,7 @@ const httpRequest = url => {
                 client.send(data);
             });
         }
-    };
-
-    var serialize = function (obj) {
-        var str = [];
-        for (var p in obj)
-            if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-        return str.join("&");
-    }
+    };    
    
     return {
         'get': function (args) {

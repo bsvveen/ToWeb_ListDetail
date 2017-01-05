@@ -5,20 +5,19 @@ import { connect } from 'react-redux';
 import { schema, uischema } from "../data/schemas/schema1";
 import { updateRecord } from '../actions';
 
-const EditRecordForm = ({ recordkey, record, onFormSubmit }) => {
-    let onSubmit = (formData) => { onFormSubmit(recordkey, new Record(formData, record.state)); };
-    if (recordkey) {
-        return (<Form schema={schema} uiSchema={uischema} formData={record.body} onSubmit={e => onSubmit(e.formData)}  onError={ e => console.log(e) } />)
-    }
+const EditRecordForm = ({ record, onFormSubmit }) => {
+    let onSubmit = (formData) => { onFormSubmit(new Record(record.key, formData, record.state)); };    
+    if (record) 
+        return (<Form schema={schema} uiSchema={uischema} formData={record.body} onSubmit={e => onSubmit(e.formData)}  onError={ e => console.log(e) } />)    
     return (<div />)
 }
 
 const mapStateToProps = (state) => {    
-    return { recordkey: state.detail.key, record: state.detail.record }    
+    return { record: state.detail }    
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return { onFormSubmit: (key, record) => { dispatch(updateRecord(key, record)) } }
+    return { onFormSubmit: (record) => { dispatch(updateRecord(record)) } }
 }
 
 const EditRecord = connect(
@@ -30,7 +29,8 @@ export default EditRecord
 
 // private
 
-function Record(body, state) {  
+function Record(key, body, state) {  
+  this.key = key; 
   this.state = state;  
   this.body = body;
 }
