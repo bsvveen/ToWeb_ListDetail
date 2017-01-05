@@ -7,9 +7,9 @@ const record = (state = {}, action) => {
     case EDIT_RECORD: 
         var statechange = { 'state' : { 'isDirty' : true } };
         return _.merge({}, state, statechange); 
-    case RECEIVE_RECORD: 
-        var statechange = { 'state' : { 'isFetching' : false, 'isDirty' : false }, 'body' : action.record.body };        
-        return _.merge({}, state, statechange)        
+    case RECEIVE_RECORD:   
+    case RECEIVE_RECORDS:             
+        return { 'state': { isFetching: false, isValidated: true, isDirty: false, hasError: false, errors:[] }, 'body' : state };     
     case UPDATE_RECORD:   
         var statechange = { 'state' : { 'isFetching' : true }, 'body' : action.record.body };
         return _.merge({}, state, statechange); 
@@ -18,10 +18,10 @@ const record = (state = {}, action) => {
   }
 }
 
-const records = (state = [], action) => {
+const records = (state = [], action) => { 
   switch (action.type) {
     case RECEIVE_RECORDS:
-        return action.records;
+        return action.records.map((t) => { return record(t, action) });
     case UPDATE_RECORD:
       if (state.map((t) => t.key).includes(action.key)) {
         return state.map((t) => { if ( t.key === action.key) { return record(t, action); } else { return t; }});

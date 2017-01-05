@@ -5,15 +5,14 @@ const Record = ({ state, body, onEditClick, onDelClick }) => (
     <tr>
         <td>
           {body.title}<br />
-          <i>{body.key}</i>
-        </td><td>
-          <span className={state.isFetching ? 'glyphicon glyphicon-refresh' : 'hidden'}></span>
-          <span className={state.isDirty ? 'glyphicon glyphicon-lock' : 'hidden'} ></span>
-          <span className={state.isValidated ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'} ></span>
+          <i className='small margin'>{body.key}</i>       
+          <span className={state.isFetching ? 'glyphicon glyphicon-refresh' : 'hidden'} title='Fetching'></span>
+          <span className={state.isDirty ? 'glyphicon glyphicon-lock' : 'hidden'}  title='Dirty'></span>
+          <span className={state.isValidated ? 'glyphicon glyphicon-ok' : 'hidden'}  title='Validated'></span>
         </td>
         <td>
-          <span className='glyphicon glyphicon-pencil margin' onClick={onEditClick}></span>
-          <span className='glyphicon glyphicon-trash margin' onClick={onDelClick}></span>
+          <span className='glyphicon glyphicon-pencil margin' onClick={onEditClick} title='Edit'></span>
+          <span className='glyphicon glyphicon-trash margin' onClick={onDelClick} title='Delete'></span>
         </td>
     </tr>
 )

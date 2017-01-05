@@ -13,12 +13,16 @@ export const RECEIVE_ERROR = 'RECEIVE_ERROR';
 export const UPDATE_RECORD = 'UPDATE_RECORD';
 export const GETTING_RECORDS = 'GETTING_RECORDS';
 
+// FILTER
+
 export const setFilter = (filter) => {
   return {
     type: SET_FILTER,
     filter
   }
 }
+
+// NEW
 
 export const newRecord = () => {
   console.log('action newRecord');
@@ -29,11 +33,29 @@ export const newRecord = () => {
   }
 }
 
-export const editRecord = (record) => {
+// EDIT
+
+export const editRecord = (key, record) => {
   return {
     type: EDIT_RECORD,
-    record
+    key: key, record: record
   }
+}
+
+// UPDATE
+
+export const updatingRecord = (key, record) => {
+  return {
+    type: UPDATE_RECORD,
+    key, record
+  }
+}
+
+export function updateRecord(key, record) {
+    return function (dispatch) {
+      dispatch(updatingRecord(key, record));
+      return httpRequest('Poco').post(record.body).then(obj => dispatch(receiveRecord(key, obj))); 
+    }
 }
 
 export const receiveRecord = (key, record) => {
@@ -43,13 +65,7 @@ export const receiveRecord = (key, record) => {
   }
 }
 
-export const receiveError = (error) => {
-  console.log('receiveErrorFromAPi: ', error);
-  return {
-    type: RECEIVE_ERROR,
-    error
-  }
-}
+// DELETE
 
 export const deletingRecord = (key, record) => {
   return {
@@ -72,21 +88,7 @@ export function deleteRecord(key, record) {
     }
 }
 
-export const updatingRecord = (key, record) => {
-  return {
-    type: UPDATE_RECORD,
-    key, record
-  }
-}
-
-export function updateRecord(key, record) {
-    return function (dispatch) {
-      dispatch(updatingRecord(key, record));
-      return httpRequest('Poco').post(record.body).then(obj => dispatch(receiveRecord(key, obj))); 
-    }
-}
-
-// GET Records
+// GET
 
 export const gettingRecords = () => {
   return {
