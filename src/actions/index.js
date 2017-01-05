@@ -43,13 +43,6 @@ export const receiveRecord = (key, record) => {
   }
 }
 
-export const receiveRecords = (records) => {
-  return {
-    type: RECEIVE_RECORDS,
-    records
-  }
-}
-
 export const receiveError = (error) => {
   console.log('receiveErrorFromAPi: ', error);
   return {
@@ -72,22 +65,10 @@ export const deletedRecord = (key) => {
   }
 }
 
-export function deleteRecord(key, record) {
-
-    console.log('deleteRecord: ', record);
-
+export function deleteRecord(key, record) {  
     return function (dispatch) {
-
       dispatch(deletingRecord(key, record));
-
-      return fetch(apiUrl + '?key=' + key, {
-          method: 'DELETE',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }          
-        })
-        .then(handleErrors)
-        .then(response => response.json())
-        .then(json => dispatch(deletedRecord(record.key)))
-        .catch(error => dispatch(receiveError(error)))
+      return httpRequest('Poco').delete(record.body.key).then(obj => dispatch(receiveRecord(key, obj))); 
     }
 }
 
@@ -99,18 +80,13 @@ export const updatingRecord = (key, record) => {
 }
 
 export function updateRecord(key, record) {
-
-    console.log('updateRecord: ', record);
-
     return function (dispatch) {
-
       dispatch(updatingRecord(key, record));
-
-      return httpRequest('Poco').post(record.body).then(
-        json => dispatch(receiveRecord(key, JSON.parse(json)))
-      );        
+      return httpRequest('Poco').post(record.body).then(obj => dispatch(receiveRecord(key, obj))); 
     }
 }
+
+// GET Records
 
 export const gettingRecords = () => {
   return {
@@ -118,29 +94,22 @@ export const gettingRecords = () => {
   }
 }
 
-export function getRecords() {
-
-    console.log('getRecords');
-
+export function getRecords() {   
     return function (dispatch) {
       dispatch(gettingRecords());
-      return fetch(apiUrl, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-        })
-        .then(handleErrors)
-        .then(response => response.json())
-        .then(json => dispatch(receiveRecords(JSON.parse(json))))
-        .catch(error => dispatch(receiveError(error)))
-    }
+      return httpRequest('Poco').get().then(obj => dispatch(receiveRecords(obj))); 
+    }     
 }
 
-function handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
+export const receiveRecords = (records) => {
+  return {
+    type: RECEIVE_RECORDS,
+    records
+  }
 }
+
+// Private
+
 
 function createGuid()
 {
