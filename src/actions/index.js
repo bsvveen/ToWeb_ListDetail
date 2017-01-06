@@ -16,13 +16,28 @@ export const setFilter = (filter) => {
 
 // NEW
 
-export const NEW_RECORD = 'NEW_RECORD';
+export const INSERTING_RECORD = 'INSERTING_RECORD';
 
-export const newRecord = () => {  
+export const insertingRecord = () => {  
   return {
-    type: NEW_RECORD,
-    record: { state: { isFetching: false, isValidated: false, isDirty: false, hasError: false, errors:[] },  body: { title: 'A new record' } }
+    type: INSERTING_RECORD    
   }
+}
+
+export const INSERTED_RECORD = 'INSERTED_RECORD';
+
+export const insertedRecord = (newbody) => {  
+  return {
+    type: INSERTED_RECORD,
+    record: { key: newbody.key, body: newbody }
+  }
+}
+
+export function insertRecord() {
+    return function (dispatch) {
+      dispatch(insertingRecord()); 
+      return httpRequest('Poco').post(data).then(newbody => dispatch(insertedRecord(record))); 
+    }
 }
 
 // EDIT
@@ -58,6 +73,7 @@ export const updatedRecord = (record, newbody) => {
 
 export function updateRecord(record) {
     return function (dispatch) {
+
       dispatch(updatingRecord(record));
       
       var data =  _.merge({}, record.body, { 'key' : record.key }); 

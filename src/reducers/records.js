@@ -1,11 +1,11 @@
 
 import _ from "lodash"
-import { NEW_RECORD, EDIT_RECORD, UPDATING_RECORD, UPDATED_RECORD, DELETING_RECORD, DELETED_RECORD, GETTING_RECORDS, GOT_RECORDS } from "../actions"
+import { INSERTING_RECORD, INSERTED_RECORD, EDIT_RECORD, UPDATING_RECORD, UPDATED_RECORD, DELETING_RECORD, DELETED_RECORD, GETTING_RECORDS, GOT_RECORDS } from "../actions"
 
 const record = (state = {}, action) => {
   var statechange;
-  switch (action.type) {
-    case NEW_RECORD:
+  switch (action.type) {  
+    case INSERTED_RECORD:           
     case GOT_RECORDS: 
         statechange = { 'state' : { 'isFetching' : false, 'isValidated': false, 'isDirty' : false} };   
         return _.merge({}, state, statechange);     
@@ -29,7 +29,7 @@ const records = (state = [], action) => {
         return action.records((t) => { return record(t, action); });   
     case DELETED_RECORD:
         return state.filter(record => record.key !== action.key);
-    case NEW_RECORD:
+    case INSERTED_RECORD:
         return [...state, record(action.record, action)];
     case UPDATING_RECORD:        
     case EDIT_RECORD:
