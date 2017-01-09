@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { newRecord } from '../actions'
+import { createNewRecord } from '../actions'
 
 let newRecordButton = ({ onButtonClick }) => {
     return (<button type='submit' className='btn btn-success margin' onClick={e => onButtonClick()}>New</button>)
@@ -10,7 +10,7 @@ let newRecordButton = ({ onButtonClick }) => {
 const mapStateToProps = (state) => { return {} }
 
 const mapDispatchToProps = (dispatch) => {
-    return { onButtonClick: () => { dispatch(newRecord()) }}
+    return { onButtonClick: () => { dispatch(createNewRecord()) }}
 }
 
 const NewRecord = connect(

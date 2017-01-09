@@ -34,7 +34,7 @@ const records = (state = [], action) => {
     case UPDATING_RECORD:        
     case EDIT_RECORD:
     case UPDATED_RECORD:
-        return state.map((t) => { if ( t.key === action.key) { return record(t, action); } else { return t; }});        
+        return state.map((t) => { if ( t.key === action.record.key) { return record(t, action); } else { return t; }});        
     default:
         return state;
   }

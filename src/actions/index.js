@@ -16,6 +16,15 @@ export const setFilter = (filter) => {
 
 // NEW
 
+export function createNewRecord() {
+    var newRecord = {  body: { title: '...'} }
+    return function (dispatch) {
+      dispatch(insertRecord(newRecord));    
+    }
+}
+
+// INSERT
+
 export const INSERTING_RECORD = 'INSERTING_RECORD';
 
 export const insertingRecord = () => {  
@@ -33,10 +42,10 @@ export const insertedRecord = (newbody) => {
   }
 }
 
-export function insertRecord() {
+export function insertRecord(record) {
     return function (dispatch) {
-      dispatch(insertingRecord()); 
-      return httpRequest('Poco').post(data).then(newbody => dispatch(insertedRecord(record))); 
+      dispatch(insertingRecord());       
+      return httpRequest('Poco').post(record.body).then(newbody => dispatch(insertedRecord(newbody)));       
     }
 }
 
@@ -62,7 +71,7 @@ export const updatingRecord = (record) => {
   }
 }
 
-export const UPDATED_RECORD = 'UPDATE_RECORD';
+export const UPDATED_RECORD = 'UPDATED_RECORD';
 
 export const updatedRecord = (record, newbody) => {
   return {
@@ -73,15 +82,9 @@ export const updatedRecord = (record, newbody) => {
 
 export function updateRecord(record) {
     return function (dispatch) {
-
-      dispatch(updatingRecord(record));
-      
+      dispatch(updatingRecord(record));      
       var data =  _.merge({}, record.body, { 'key' : record.key }); 
-
-      if (record.key)
-        return httpRequest('Poco').put(data).then(newbody => dispatch(updatedRecord(record, newbody))); 
-
-      return httpRequest('Poco').post(data).then(newbody => dispatch(updatedRecord(record, newbody))); 
+      return httpRequest('Poco').put(data).then(newbody => dispatch(updatedRecord(record, newbody)));      
     }
 }
 
